@@ -15,7 +15,7 @@ struct Date: Comparable, Equatable, CustomStringConvertible {
   private let DEF_DAY = 1
   private let DEF_YEAR = 2000
   
-  private let monthsWith30days = [2, 4, 6, 9, 11]
+  private let monthsWith30days = [4, 6, 9, 11]
   private let monthsWith31days = [1, 3, 5, 7, 8, 10, 12]
   private let monthWith28days = 2
   
@@ -26,9 +26,9 @@ struct Date: Comparable, Equatable, CustomStringConvertible {
     10: "Oct", 11: "Nov", 12: "Dec"
   ]
   
-  var month:Int = 1
-  var day:Int = 1
-  var year:Int = 2000
+  private(set) var month:Int = 1
+  private(set) var day:Int = 1
+  private(set) var year:Int = 2000
   
   private var format = DateFormat.standard
   
@@ -136,7 +136,7 @@ struct Date: Comparable, Equatable, CustomStringConvertible {
           month = 1
         }
         day = 1
-        _numDays -= (restOfDate + 1)
+        _numDays = _numDays - restOfDate - 1
       }
     } else {
       while true {
@@ -159,7 +159,7 @@ struct Date: Comparable, Equatable, CustomStringConvertible {
     }
   }
   
-  func isLastDay(month:Int, day:Int) -> Bool{
+  private func isLastDay(month:Int, day:Int) -> Bool{
     var isLastDay = false
     if day == 30 && monthsWith30days.contains(month){
       isLastDay = true
@@ -172,7 +172,7 @@ struct Date: Comparable, Equatable, CustomStringConvertible {
     return isLastDay
   }
   
-  func getLastDay(month:Int) -> Int {
+  private func getLastDay(month:Int) -> Int {
     var lastDay = 0
     if monthsWith30days.contains(month){
       lastDay = 30
@@ -207,7 +207,7 @@ struct Date: Comparable, Equatable, CustomStringConvertible {
       }
     }
     
-    return true
+    return false
   }
   
   static func ==(lhs: Date, rhs:Date) -> Bool {
